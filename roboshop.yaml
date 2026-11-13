@@ -20,18 +20,6 @@
       loop: "{{ instance }}"
       register: ec2_output
 
-    # - name: Create Route 53 records
-    #   amazon.aws.route53:
-    #     state: present
-    #     zone: "{{ domain_name }}"
-    #     ttl: 1
-    #     type: A
-    #     record: "{{ domain_name }}"   #points to frintend public Ip
-    #     overwrite: true
-    #     value: "{{ item.instances[0].private_ip_address }}"
-    #   loop: "{{ ec2_output.results }}"
-    #   when: action == "create"
-
     - name: Create Route 53 records for instances
       amazon.aws.route53:
         state: present
