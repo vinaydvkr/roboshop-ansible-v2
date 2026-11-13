@@ -1,0 +1,75 @@
+- name: Create EC2 instances and Route 53 records
+  hosts: local
+  connection: local
+  gather_facts: false
+
+  vars:
+    instance: ["mongodb", "redis", "mysql", "rabbitmq", "catalogue", "user", "cart", "shipping", "payment", "frontend"]
+    action: create
+    domain_name: vinayexpense.store
+    ami_id: ami-0055977a6e828a4f4
+
+  tasks:
+    - name: Create EC2 instances
+      amazon.aws.ec2_instance:
+        name: "roboshop-{{ item }}"
+        instance_type: t3.micro
+        image_id: "{{ ami_id }}"
+        region: us-east-1
+        wait: true
+      loop: "{{ instance }}"
+      register: ec2_output
+
+    - name: Create Route 53 records
+      amazon.aws.route53:
+        state: present
+        zone: "{{ domain_name }}"
+        ttl: 1
+        type: A
+        record: "{{ domain_name }}"   #points to frintend public Ip
+        overwrite: true
+        value: "{{ item.instances[0].private_ip_address }}"
+      loop: "{{ ec2_output.results }}"
+      when: action == "create"
+
+    - name: Create Route 53 records for frontend
+      amazon.aws.route53:
+        state: present
+        zone: "{{ domain_name }}"
+        ttl: 1
+        type: A
+        record: "{{ item.item }}.{{ domain_name }}"
+        overwrite: true
+        value: "{{ item.instances[0].private_ip_address }}"
+      loop: "{{ ec2_output.results }}"
+      when: action == "create" and item.item == "frontend"
+
+    - name: Delete Route 53 records
+      amazon.aws.route53:
+        state: absent
+        zone: "{{ domain_name }}"
+        record: "{{ item }}.{{ domain_name }}"
+        ttl: 1
+        type: A
+      loop: "{{ instance }}"
+      when: action == "delete"
+
+    - name: delete R53 record for frontend
+      amazon.aws.route53:
+        state: absent
+        zone: "{{ domain_name }}"
+        record: "{{ domain_name }}"
+        ttl: 1
+        type: A
+      when: action == "delete" 
+
+    - name: Delete EC2 instances
+      amazon.aws.ec2_instance:
+        name: "roboshop-{{ item }}"
+        state: absent
+        region: us-east-1
+        wait: false
+      loop: "{{ instance }}"
+      when: action == "delete"
+
+
