@@ -19,7 +19,7 @@
 - name: Create the roboshop user
   community.rabbitmq.rabbitmq_user:
     user: roboshop
-    password: "{{ roboshop_password }}"
+    password: roboshop123
     state: present
     update_password: on_create
 
