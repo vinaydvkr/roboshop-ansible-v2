@@ -1,0 +1,10 @@
+- name: disable nodejs
+  command: dnf module disable nodejs -y
+
+- name: enable nodejs 24
+  command: dnf module enable nodejs:24 -y
+
+- name: install node js
+  ansible.builtin.package:
+    name: nodejs
+    state: present
