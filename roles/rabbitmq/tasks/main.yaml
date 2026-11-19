@@ -25,7 +25,7 @@
 
 - name: Grant roboshop full permissions on the default vhost
   community.rabbitmq.rabbitmq_user:
-    user: roboshop
+    user: "{{ vault_roboshop_user }}"
     vhost: /
     configure_priv: .*
     read_priv: .*
