@@ -1,0 +1,3 @@
+- name: this task is for common
+  ansible.builtin.debug:
+    msg: "common role"
