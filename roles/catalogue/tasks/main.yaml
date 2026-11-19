@@ -66,7 +66,7 @@
 
 - name: check the products loaded or not
   command: mongosh --host "{{ mongodb_host }}" --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()'
-    register: product_count
+  register: product_count
 
 - name: print the product count
   ansible.builtin.debug:  
@@ -74,7 +74,7 @@
 
 - name: load the products
   shell: mongosh --host "{{ mongodb_host }}" < /app/db/master-data.js
-    when: product_count.stdout | int == 0
+  when: product_count.stdout | int == 0
 
 - name: daemon-reload
   ansible.builtin.systemd_service:
