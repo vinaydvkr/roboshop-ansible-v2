@@ -3,6 +3,8 @@
 ansibel_user: " {{ vault_ansible_user }} "
 ansible_password: "{{ vault_ansible_password }}"
 mysql_root_password: "{{ vault_mysql_root_password }}"
+roboshop_user: "{{ vault_roboshop_user }}"
+roboshop_password: "{{ vault_roboshop_password }}"
 
 
 mongodb_host: mongodb.vinayexpense.store
