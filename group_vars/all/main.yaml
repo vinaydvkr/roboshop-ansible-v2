@@ -1,0 +1,9 @@
+mongodb_host: mongodb.vinayexpense.store
+redis_host: redis.vinayexpense.store
+mysql_host: mysql.vinayexpense.store
+rabbitmq_host: rabbitmq.vinayexpense.store
+catalogue_host: catalogue.vinayexpense.store
+user_host: user.vinayexpense.store
+cart_host: cart.vinayexpense.store
+shipping_host: shipping.vinayexpense.store
+payment_host: payment.vinayexpense.store
