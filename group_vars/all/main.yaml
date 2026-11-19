@@ -1,3 +1,9 @@
+# ansible_user: ec2-user
+# ansible_password: DevOps321
+ansibel_user: " {{ vault_ansible_user }} "
+ansible_password: "{{ vault_ansible_password }}"
+
+
 mongodb_host: mongodb.vinayexpense.store
 redis_host: redis.vinayexpense.store
 mysql_host: mysql.vinayexpense.store
