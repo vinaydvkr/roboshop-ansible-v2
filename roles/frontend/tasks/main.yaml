@@ -46,7 +46,3 @@
     dest: /etc/nginx/default.d/roboshop.conf
   notify: restart nginx  
 
-- name: restart frontend
-  ansible.builtin.service:
-    name: nginx
-    state: restarted
