@@ -6,7 +6,7 @@ mysql_root_password: "{{ vault_mysql_root_password }}"
 roboshop_user: "{{ vault_roboshop_user }}"
 roboshop_password: "{{ vault_roboshop_password }}"
 shipping_db_user: "{{ vault_shipping_db_user }}"
-shipping_db_password: "{{ vault shipping_db_password }}"
+shipping_db_password: "{{ vault_shipping_db_password }}"
 
 
 mongodb_host: mongodb.vinayexpense.store
