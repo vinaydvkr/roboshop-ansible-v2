@@ -1,0 +1,51 @@
+- name: disable nginx
+  command: dnf module disable nginx -y
+    
+- name: enable nginx
+  command: dnf module enable nginx:1.26 -y
+
+- name: install nginx
+  package:
+    name: nginx
+    state: present
+    
+- name: start and enable nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Remove all files and subdirectories from the web root
+  ansible.builtin.file:
+    path: /usr/share/nginx/html
+    state: absent
+      # This removes the directory too; recreate it afterward.
+    
+- name: Recreate the web root
+  ansible.builtin.file:
+    path: /usr/share/nginx/html
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: download the frontend application
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/frontend-v4.zip
+    dest: /tmp/frontend.zip
+
+- name: unzip frontend
+  ansible.builtin.unarchive:
+    src: /tmp/frontend.zip
+    dest: /usr/share/nginx/html
+    remote_src: yes
+
+- name: copy roboshop.conf
+  ansible.builtin.template:
+    src: roboshop.conf.j2
+    dest: /etc/nginx/default.d/roboshop.conf
+
+- name: restart frontend
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
