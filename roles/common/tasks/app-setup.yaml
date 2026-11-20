@@ -15,7 +15,7 @@
 
 - name: remove catalogue.zip
   ansible.builtin.file:
-    path: /tmp/catalogue.zip
+    path: /tmp/{{ component }}.zip
     state: absent
 
 - name: create directory
@@ -25,11 +25,11 @@
 
 - name: Download the application archive
   ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/catalogue-v4.zip
-    dest: /tmp/catalogue.zip
+    url: https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/{{ component }}-v4.zip
+    dest: /tmp/{{ component }}.zip
 
 - name: Extract the application archive
   ansible.builtin.unarchive:
-    src: /tmp/catalogue.zip
+    src: /tmp/{{ component }}.zip
     dest: /app
     remote_src: true
