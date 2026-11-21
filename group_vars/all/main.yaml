@@ -1,8 +1,12 @@
 # ansible_user: ec2-user
 # ansible_password: DevOps321
-ansibel_user: " {{ vault_ansible_user }} "
-ansible_password: "{{ vault_ansible_password }}"
-mysql_root_password: "{{ vault_mysql_root_password }}"
+# ansibel_user: " {{ vault_ansible_user }} "
+# ansible_password: "{{ vault_ansible_password }}"
+ansibel_user: "{{ lookup('amazon.aws.aws_secret', 'roboshop/ansible/ansiblev2', region='us-east-1') | from_json | json_query('ansible_user') }}"
+ansible_password: "{{ lookup('amazon.aws.aws_secret', 'roboshop/ansible/ansiblev2', region='us-east-1') | from_json | json_query('ansible_password ') }}"
+mysql_root_password: "{{ lookup('amazon.aws.aws_secret', 'roboshop/ansible/ansiblev2', region='us-east-1') | from_json | json_query('mysql_root_password ') }}"
+
+# mysql_root_password: "{{ vault_mysql_root_password }}"
 roboshop_user: "{{ vault_roboshop_user }}"
 roboshop_password: "{{ vault_roboshop_password }}"
 shipping_db_user: "{{ vault_shipping_db_user }}"
